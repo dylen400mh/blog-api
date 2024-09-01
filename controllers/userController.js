@@ -2,6 +2,8 @@ const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
+const jwt = require("jsonwebtoken");
+
 exports.registerPost = async (req, res, next) => {
   bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
     if (err) {
@@ -24,4 +26,30 @@ exports.registerPost = async (req, res, next) => {
       return next(err);
     }
   });
+};
+
+exports.loginPost = async (req, res, next) => {
+  let { email, password } = req.body;
+  const user = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+  if (user) {
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+      const token = jwt.sign(user, process.env.secret);
+      return res.status(200).json({
+        message: "Auth successful",
+        token,
+      });
+    }
+  }
+  return res.status(401).json({ message: "Auth failed" });
+};
+
+exports.logoutPost = (req, res, next) => {
+  res.clearCookie("token"); // Clear the JWT cookie
+  res.status(200).json({ message: "Logged out successfully" });
 };
