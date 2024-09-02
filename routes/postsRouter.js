@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const postController = require("../controllers/postController");
-const jwtStrategy = require("../strategies/jwt");
+const adminStrategy = require("../strategies/adminStrategy");
 const passport = require("passport");
-passport.use(jwtStrategy);
+passport.use(adminStrategy);
 
 const postsRouter = Router();
 

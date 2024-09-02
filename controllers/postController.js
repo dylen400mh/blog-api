@@ -1,8 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const passport = require("passport");
-const jwtStrategy = require("../strategies/jwt");
-passport.use(jwtStrategy);
+const adminStrategy = require("../strategies/adminStrategy");
+passport.use(adminStrategy);
 
 exports.getPosts = async (req, res, next) => {
   try {
@@ -26,7 +26,7 @@ exports.getPostById = async (req, res, next) => {
     // if post isn't published, authenticate
     if (!post.isPublished) {
       passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if (err || !user) {
+        if (err || !user || user.username !== process.env.ADMIN_USER) {
           return res.status(403).json({
             message: "Forbidden: You are not allowed to view this post",
           });
