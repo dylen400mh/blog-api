@@ -8,11 +8,18 @@ const prisma = new PrismaClient();
 
 // jwt strategy to only allow me to access protected routes
 module.exports = new JwtStrategy(opts, async (jwt_payload, done) => {
-  console.log("JWT Payload: ", jwt_payload);
-
-  if (jwt_payload.username === process.env.ADMIN_USER) {
-    return done(null, jwt_payload);
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        username: process.env.ADMIN_USER,
+      },
+    });
+    if (user && user.username === jwt_payload.username) {
+      return done(null, user);
+    } else {
+      return done(null, false);
+    }
+  } catch (err) {
+    return done(err, false);
   }
-
-  return done(null, false);
 });
