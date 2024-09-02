@@ -18,7 +18,7 @@ exports.registerPost = async (req, res, next) => {
         },
       });
 
-      res.status(401).json({ message: "User registered successfully", user });
+      res.status(201).json({ message: "User registered successfully", user });
     } catch (err) {
       if (err.code === "P2002") {
         res.status(409).json({ error: "Username or email already exists" });

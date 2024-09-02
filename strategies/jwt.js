@@ -6,20 +6,13 @@ opts.secretOrKey = process.env.secret;
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+// jwt strategy to only allow me to access protected routes
 module.exports = new JwtStrategy(opts, async (jwt_payload, done) => {
-  try {
-    const user = await prisma.user.findFirst({
-      where: {
-        email: jwt_payload.email,
-      },
-    });
+  console.log("JWT Payload: ", jwt_payload);
 
-    if (user) {
-      return done(null, true);
-    }
-
-    return done(null, false);
-  } catch (err) {
-    return next(err);
+  if (jwt_payload.username === process.env.ADMIN_USER) {
+    return done(null, jwt_payload);
   }
+
+  return done(null, false);
 });
