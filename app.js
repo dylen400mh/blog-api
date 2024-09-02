@@ -10,8 +10,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", usersRouter);
 app.use("/api/posts", postsRouter);
-app.use("/api/comments", commentsRouter);
-
-app.get("/", (req, res) => res.json({ message: "Hello" }));
+app.use("/api/", commentsRouter);
 
 app.listen(3000, () => console.log("Listening on port 3000"));
