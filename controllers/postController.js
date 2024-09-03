@@ -23,6 +23,10 @@ exports.getPostById = async (req, res, next) => {
       },
     });
 
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
     // if post isn't published, authenticate
     if (!post.isPublished) {
       passport.authenticate("jwt", { session: false }, (err, user, info) => {
@@ -33,7 +37,7 @@ exports.getPostById = async (req, res, next) => {
         }
 
         return res.status(200).json({ post });
-      });
+      })(req, res, next);
     } else {
       return res.status(200).json({ post });
     }
