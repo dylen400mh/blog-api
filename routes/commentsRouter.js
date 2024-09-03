@@ -12,7 +12,15 @@ commentsRouter.post(
   passport.authenticate("jwt", { session: false }),
   commentController.createPostComment
 );
-commentsRouter.put("/comments/:id");
-commentsRouter.delete("/comments/:id");
+commentsRouter.put(
+  "/comments/:id",
+  passport.authenticate("jwt", { session: false }),
+  commentController.updateComment
+);
+commentsRouter.delete(
+  "/comments/:id",
+  passport.authenticate("jwt", { session: false }),
+  commentController.deleteComment
+);
 
 module.exports = commentsRouter;

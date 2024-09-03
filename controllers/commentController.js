@@ -54,3 +54,78 @@ exports.createPostComment = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.updateComment = async (req, res, next) => {
+  const id = parseInt(req.params.id, 10);
+
+  try {
+    const comment = await prisma.comment.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // restrict access if user is not comment owner and not admin
+    if (
+      comment.userId !== req.user.id &&
+      req.user.username !== process.env.ADMIN_USER
+    ) {
+      return res.status(403).json({
+        message: "Forbidden: You are not allowed to update this comment",
+      });
+    }
+
+    const updatedComment = await prisma.comment.update({
+      where: {
+        id: comment.id,
+      },
+      data: {
+        content: req.body.content,
+      },
+    });
+
+    return res.status(200).json({ message: "Comment updated", updatedComment });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.deleteComment = async (req, res, next) => {
+  const id = parseInt(req.params.id, 10);
+
+  try {
+    const comment = await prisma.comment.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // restrict access if user is not comment owner and not admin
+    if (
+      comment.userId !== req.user.id &&
+      req.user.username !== process.env.ADMIN_USER
+    ) {
+      return res.status(403).json({
+        message: "Forbidden: You are not allowed to update this comment",
+      });
+    }
+
+    const deletedComment = await prisma.comment.delete({
+      where: {
+        id: comment.id,
+      },
+    });
+
+    return res.status(200).json({ message: "Comment deleted", deletedComment });
+  } catch (err) {
+    return next(err);
+  }
+};
