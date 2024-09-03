@@ -13,24 +13,39 @@ exports.getPostComments = async (req, res, next) => {
       },
     });
 
-    // if post isn't published, authenticate
-    if (!post.isPublished) {
-      passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if (err || !user || user.username !== process.env.ADMIN_USER) {
-          return res.status(403).json({
-            message: "Forbidden: You are not allowed to view this post",
-          });
-        }
-      });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
     }
 
-    const comments = await prisma.comment.findMany({
-      where: {
-        postId: id,
-      },
-    });
+    // if post isn't published, authenticate
+    if (!post.isPublished) {
+      return passport.authenticate(
+        "jwt",
+        { session: false },
+        async (err, user, info) => {
+          if (err || !user || user.username !== process.env.ADMIN_USER) {
+            return res.status(403).json({
+              message: "Forbidden: You are not allowed to view this post",
+            });
+          }
 
-    return res.status(200).json({ comments });
+          const comments = await prisma.comment.findMany({
+            where: {
+              postId: id,
+            },
+          });
+
+          return res.status(200).json({ comments });
+        }
+      )(req, res, next);
+    } else {
+      const comments = await prisma.comment.findMany({
+        where: {
+          postId: id,
+        },
+      });
+      return res.status(200).json({ comments });
+    }
   } catch (err) {
     return next(err);
   }
