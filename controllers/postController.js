@@ -14,7 +14,7 @@ exports.getPosts = async (req, res, next) => {
 };
 
 exports.getPostById = async (req, res, next) => {
-  const { id } = req.params;
+  const { id } = parseInt(req.params, 10);
 
   try {
     const post = await prisma.post.findFirst({
