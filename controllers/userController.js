@@ -57,3 +57,31 @@ exports.logoutUser = (req, res, next) => {
   res.clearCookie("token", { httpOnly: true, secure: true }); // Clear the JWT cookie
   res.status(200).json({ message: "Logged out successfully" });
 };
+
+exports.getUsers = async (req, res, next) => {
+  const ids = req.query.ids;
+
+  if (!ids) {
+    return res.status(400).json({ error: "No user IDs provided" });
+  }
+
+  const userIds = ids.split(",");
+
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        id: {
+          in: userIds,
+        },
+      },
+    });
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "No users found" });
+    }
+
+    return res.status(200).json({ users });
+  } catch (err) {
+    return next(err);
+  }
+};
