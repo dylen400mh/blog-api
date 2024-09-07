@@ -50,7 +50,7 @@ exports.loginUser = async (req, res, next) => {
     });
   }
 
-  return res.status(401).json({ message: "Auth failed" });
+  return res.status(401).json({ message: "Incorrect Credentials" });
 };
 
 exports.logoutUser = (req, res, next) => {
