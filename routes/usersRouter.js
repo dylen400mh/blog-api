@@ -4,14 +4,16 @@ const usersRouter = Router();
 const userStrategy = require("../strategies/userStrategy");
 const adminStrategy = require("../strategies/adminStrategy");
 const passport = require("passport");
-passport.use(adminStrategy, userStrategy);
+passport.use("jwt-admin", adminStrategy);
+passport.use("jwt-user", userStrategy);
+
 
 usersRouter.post("/register", userController.registerUser);
 usersRouter.post("/login", userController.loginUser);
 usersRouter.post("/logout", userController.logoutUser);
 usersRouter.get(
   "/users",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt-user", { session: false }),
   userController.getUsers
 );
 usersRouter.get("/profile");
