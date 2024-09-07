@@ -16,11 +16,4 @@ app.use("/api", usersRouter);
 app.use("/api/posts", postsRouter);
 app.use("/api/", commentsRouter);
 
-app.use((err, req, res, next) => {
-  if (err.status === 403) {
-    return res.status(403).json({ error: err.message });
-  }
-  next(err); 
-});
-
 app.listen(3001, () => console.log("Listening on port 3001"));
