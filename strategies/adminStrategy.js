@@ -19,7 +19,10 @@ module.exports = new JwtStrategy(opts, async (req, jwt_payload, done) => {
       req.user = user;
       return done(null, user);
     } else {
-      return done(null, false);
+      return done(null, false, {
+        status: 403,
+        message: "Forbidden: You don't have access to this resource.",
+      });
     }
   } catch (err) {
     return done(err, false);
