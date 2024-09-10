@@ -9,7 +9,7 @@ const app = express();
 corsOptions = {
   origin: process.env.FRONTEND_ORIGIN,
 };
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
