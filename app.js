@@ -19,7 +19,7 @@ app.use("/api/", commentsRouter);
 
 // Handling emails from portfolio site
 const transporter = nodemailer.createTransport({
-  service: "outlook",
+  service: "gmail",
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
@@ -38,6 +38,7 @@ app.use("/api/send-email", (req, res, next) => {
 
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
+      console.log(err);
       return res
         .status(500)
         .json({ message: "Error sending message, please try again!" });
