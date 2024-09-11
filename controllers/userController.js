@@ -5,6 +5,10 @@ const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res, next) => {
+  if (req.body.password !== req.body.confirmPassword) {
+    return res.status(400).json({ message: "Passwords do not match." });
+  }
+  
   bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
     if (err) {
       return next(err);
@@ -21,7 +25,7 @@ exports.registerUser = async (req, res, next) => {
       res.status(201).json({ message: "User registered successfully", user });
     } catch (err) {
       if (err.code === "P2002") {
-        res.status(409).json({ error: "Username or email already exists" });
+        res.status(409).json({ message: "Username or email already exists" });
       }
       return next(err);
     }
@@ -53,16 +57,11 @@ exports.loginUser = async (req, res, next) => {
   return res.status(401).json({ message: "Incorrect Credentials" });
 };
 
-exports.logoutUser = (req, res, next) => {
-  res.clearCookie("token", { httpOnly: true, secure: true }); // Clear the JWT cookie
-  res.status(200).json({ message: "Logged out successfully" });
-};
-
 exports.getUsers = async (req, res, next) => {
   const ids = req.query.ids;
 
   if (!ids) {
-    return res.status(400).json({ error: "No user IDs provided" });
+    return res.status(400).json({ message: "No user IDs provided" });
   }
 
   const userIds = ids.split(",").map((id) => parseInt(id, 10));
@@ -81,7 +80,7 @@ exports.getUsers = async (req, res, next) => {
     });
 
     if (users.length === 0) {
-      return res.status(404).json({ error: "No users found" });
+      return res.status(404).json({ message: "No users found" });
     }
 
     return res.status(200).json({ users });

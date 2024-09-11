@@ -10,7 +10,6 @@ passport.use("jwt-user", userStrategy);
 
 usersRouter.post("/register", userController.registerUser);
 usersRouter.post("/login", userController.loginUser);
-usersRouter.post("/logout", userController.logoutUser);
 usersRouter.get(
   "/users",
   userController.getUsers
