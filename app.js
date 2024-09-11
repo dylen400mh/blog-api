@@ -6,13 +6,7 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const app = express();
 
-corsOptions = {
-  origin: "*", // Allow all origins
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
-  credentials: true, // Allows cookies and authentication credentials
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
