@@ -13,7 +13,6 @@ usersRouter.post("/login", userController.loginUser);
 usersRouter.post("/logout", userController.logoutUser);
 usersRouter.get(
   "/users",
-  passport.authenticate("jwt-user", { session: false }),
   userController.getUsers
 );
 usersRouter.get("/profile");
