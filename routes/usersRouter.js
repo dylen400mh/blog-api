@@ -7,13 +7,10 @@ const passport = require("passport");
 passport.use("jwt-admin", adminStrategy);
 passport.use("jwt-user", userStrategy);
 
-
 usersRouter.post("/register", userController.registerUser);
 usersRouter.post("/login", userController.loginUser);
-usersRouter.get(
-  "/users",
-  userController.getUsers
-);
+usersRouter.get("/users", userController.getUsers);
+usersRouter.get("/current-user", userController.getCurrentUser);
 usersRouter.get("/profile");
 usersRouter.put("/profile");
 usersRouter.delete("/profile");

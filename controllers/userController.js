@@ -8,7 +8,7 @@ exports.registerUser = async (req, res, next) => {
   if (req.body.password !== req.body.confirmPassword) {
     return res.status(400).json({ message: "Passwords do not match." });
   }
-  
+
   bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
     if (err) {
       return next(err);
@@ -87,4 +87,14 @@ exports.getUsers = async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
+};
+
+exports.getCurrentUser = (req, res, next) => {
+  const { user } = req;
+
+  if (!user) {
+    return res.status(404).json({ message: "No user logged in." });
+  }
+
+  return res.status(200).json({ user });
 };
