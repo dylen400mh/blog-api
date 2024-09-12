@@ -90,11 +90,18 @@ exports.getUsers = async (req, res, next) => {
 };
 
 exports.getCurrentUser = (req, res, next) => {
-  const { user } = req;
+  const token = req.headers.authorization?.split(" ")[1];
 
-  if (!user) {
-    return res.status(404).json({ message: "No user logged in." });
+  if (!token) {
+    return res.status(401).json({ message: "No token in headers" });
   }
 
-  return res.status(200).json({ user });
+  jwt.verify(token, process.env.secret, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: "Failed to authenticate token." });
+    }
+
+    const user = { id: decoded.id, username: decoded.username };
+    return res.status(200).json({ user });
+  });
 };
