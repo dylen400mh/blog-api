@@ -11,6 +11,7 @@ usersRouter.post("/register", userController.registerUser);
 usersRouter.post("/login", userController.loginUser);
 usersRouter.get("/users", userController.getUsers);
 usersRouter.get("/current-user", userController.getCurrentUser);
+usersRouter.get("/verify-user", userController.verifyUser);
 usersRouter.get("/profile");
 usersRouter.put("/profile");
 usersRouter.delete("/profile");

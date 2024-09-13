@@ -105,3 +105,26 @@ exports.getCurrentUser = (req, res, next) => {
     return res.status(200).json({ user });
   });
 };
+
+exports.verifyUser = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "No token in headers" });
+  }
+
+  jwt.verify(token, process.env.secret, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: "Failed to authenticate token." });
+    }
+
+    const user = { id: decoded.id, username: decoded.username };
+
+    if (user.username !== process.env.ADMIN_USER) {
+      return res
+        .status(401)
+        .json({ message: "You do not have permission to view this site" });
+    }
+    return res.status(200).json({ user });
+  });
+};
