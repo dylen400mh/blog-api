@@ -49,7 +49,7 @@ Some endpoints are public for all users; however, some are protected for use onl
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/blog-api.git
+   git clone https://github.com/dylen400mh/blog-api.git
 2. Install dependencies:
    ```bash
    npm install
