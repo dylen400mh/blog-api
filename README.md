@@ -73,4 +73,6 @@ You can use Postman or any API testing tool to interact with the API. Attach you
 ### Demo
 The following is a demo video of the API being used on the Blog Admin Frontend page: 
 [Demo](https://www.youtube.com/watch?v=4OSidLXTCLw)
+
+If you would like to check out my blog, you can visit my [Portfolio](https://dylenbelanger.com)!
    
