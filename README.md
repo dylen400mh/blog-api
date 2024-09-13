@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/ae72fce3-2c18-46e6-9cab-86ddeab2c6e8)
+
 # Blog API
 
 This project is the backend for a personal blog application. It provides an API for managing blog posts and comments, allowing for flexible separation between the backend and multiple frontend applications. The API is designed to handle CRUD operations for posts and comments, with JWT authentication for route protection.
