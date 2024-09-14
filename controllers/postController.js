@@ -81,6 +81,13 @@ exports.updatePost = async (req, res, next) => {
 
 exports.deletePost = async (req, res, next) => {
   try {
+    // delete comments
+    await prisma.comment.deleteMany({
+      where: {
+        postId: parseInt(req.params.id, 10),
+      },
+    });
+
     const post = await prisma.post.delete({
       where: {
         id: parseInt(req.params.id, 10),
@@ -89,6 +96,7 @@ exports.deletePost = async (req, res, next) => {
 
     return res.status(200).json({ message: "Post deleted", post });
   } catch (err) {
+    console.log(err);
     return next(err);
   }
 };
