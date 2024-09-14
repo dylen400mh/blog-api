@@ -4,6 +4,8 @@
 
 This project is the backend for a personal blog application. It provides an API for managing blog posts and comments, allowing for flexible separation between the backend and multiple frontend applications. The API is designed to handle CRUD operations for posts and comments, with JWT authentication for route protection.
 
+You can view the frontend blog administration interface [here](https://github.com/dylen400mh/blog-admin-frontend)
+
 ## Features
 - RESTful API for managing posts and comments
 - JWT-based authentication and route protection
