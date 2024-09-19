@@ -27,7 +27,8 @@ app.use("/api/send-email", (req, res, next) => {
   const { name, email, message } = req.body;
 
   const mailOptions = {
-    from: email,
+    from: process.env.EMAIL,
+    replyTo: email,
     to: process.env.EMAIL,
     subject: "New Message from Portfolio Site",
     text: `${message}\n\n${name}`,
